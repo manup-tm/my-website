@@ -65,7 +65,7 @@ sr.reveal('.skills__data, .work__img, .contact__input',{interval: 200});
 document.getElementById("contact-form").addEventListener("submit", function(e) {
     e.preventDefault();
 
-    emailjs.sendForm("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", this)
+    emailjs.sendForm("service_yecggpf", "template_j08y2ff", this)
     .then(function() {
         alert("Message sent successfully!");
     }, function(error) {
