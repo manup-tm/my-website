@@ -55,3 +55,20 @@ sr.reveal('.home__data, .about__img, .skills__subtitle, .skills__text',{});
 sr.reveal('.home__img, .about__subtitle, .about__text, .skills__img',{delay: 400}); 
 sr.reveal('.home__social-icon',{ interval: 200}); 
 sr.reveal('.skills__data, .work__img, .contact__input',{interval: 200}); 
+
+// Initialize EmailJS with your public key
+(function(){
+    emailjs.init("vip4AcNw6Dzxm1Kab");
+})();
+
+// Attach submit listener
+document.getElementById("contact-form").addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    emailjs.sendForm("YOUR_SERVICE_ID", "YOUR_TEMPLATE_ID", this)
+    .then(function() {
+        alert("Message sent successfully!");
+    }, function(error) {
+        alert("Failed to send message: " + JSON.stringify(error));
+    });
+});
