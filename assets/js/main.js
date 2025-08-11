@@ -16,7 +16,6 @@ const navLink = document.querySelectorAll('.nav__link')
 
 function linkAction(){
     const navMenu = document.getElementById('nav-menu')
-    // When we click on each nav__link, we remove the show-menu class
     navMenu.classList.remove('show')
 }
 navLink.forEach(n => n.addEventListener('click', linkAction))
@@ -27,7 +26,7 @@ const sections = document.querySelectorAll('section[id]')
 const scrollActive = () =>{
     const scrollDown = window.scrollY
 
-  sections.forEach(current =>{
+    sections.forEach(current =>{
         const sectionHeight = current.offsetHeight,
               sectionTop = current.offsetTop - 58,
               sectionId = current.getAttribute('id'),
@@ -47,8 +46,7 @@ const sr = ScrollReveal({
     origin: 'top',
     distance: '60px',
     duration: 2000,
-    delay: 200,
-//     reset: true
+    delay: 200
 });
 
 sr.reveal('.home__data, .about__img, .skills__subtitle, .skills__text',{}); 
@@ -56,19 +54,21 @@ sr.reveal('.home__img, .about__subtitle, .about__text, .skills__img',{delay: 400
 sr.reveal('.home__social-icon',{ interval: 200}); 
 sr.reveal('.skills__data, .work__img, .contact__input',{interval: 200}); 
 
-// Initialize EmailJS with your public key
-(function(){
-    emailjs.init("vip4AcNw6Dzxm1Kab");
-})();
+/*===== EMAILJS CONTACT FORM =====*/
 
-// Attach submit listener
+// Initialize EmailJS after it's loaded
+emailjs.init("vip4AcNw6Dzxm1Kab");
+
+// Handle form submit
 document.getElementById("contact-form").addEventListener("submit", function(e) {
     e.preventDefault();
 
     emailjs.sendForm("service_yecggpf", "template_j08y2ff", this)
     .then(function() {
-        alert("Message sent successfully!");
+        document.getElementById("thanksMessage").style.display = "block"; // Show thank you
+        e.target.reset(); // Clear the form
     }, function(error) {
-        alert("Failed to send message: " + JSON.stringify(error));
+        console.error("EmailJS Error:", error);
+        alert("❌ Failed to send message. Please try again.");
     });
 });
