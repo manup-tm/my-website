@@ -54,21 +54,39 @@ sr.reveal('.home__img, .about__subtitle, .about__text, .skills__img',{delay: 400
 sr.reveal('.home__social-icon',{ interval: 200}); 
 sr.reveal('.skills__data, .work__img, .contact__input',{interval: 200}); 
 
-/*===== EMAILJS CONTACT FORM =====*/
+/*===== EMAILJS CONTACT FORM (Load-Safe) =====*/
+function initEmailJS() {
+    if (typeof emailjs !== "undefined") {
+        emailjs.init("vip4AcNw6Dzxm1Kab"); // Your public key
 
-// Initialize EmailJS after it's loaded
-emailjs.init("vip4AcNw6Dzxm1Kab");
+        const form = document.getElementById("contact-form");
+        form.addEventListener("submit", function(e) {
+            e.preventDefault();
 
-// Handle form submit
-document.getElementById("contact-form").addEventListener("submit", function(e) {
-    e.preventDefault();
+            emailjs.sendForm("service_yecggpf", "template_j08y2ff", this)
+                .then(function() {
+                    const msg = document.getElementById("thanksMessage");
+                    msg.style.display = "block";
+                    msg.style.opacity = "1";
+                    form.reset();
 
-    emailjs.sendForm("service_yecggpf", "template_j08y2ff", this)
-    .then(function() {
-        document.getElementById("thanksMessage").style.display = "block"; // Show thank you
-        e.target.reset(); // Clear the form
-    }, function(error) {
-        console.error("EmailJS Error:", error);
-        alert("❌ Failed to send message. Please try again.");
-    });
-});
+                    // Fade out after 4 seconds
+                    setTimeout(() => {
+                        msg.style.transition = "opacity 1s ease";
+                        msg.style.opacity = "0";
+                        setTimeout(() => { msg.style.display = "none"; }, 1000);
+                    }, 4000);
+
+                }, function(error) {
+                    console.error("EmailJS Error:", error);
+                    alert("❌ Failed to send message. Please try again.");
+                });
+        });
+    } else {
+        // If emailjs isn't ready yet, try again in 200ms
+        setTimeout(initEmailJS, 200);
+    }
+}
+
+// Start initialization
+initEmailJS();
