@@ -58,7 +58,7 @@ sr.reveal('.skills__data, .work__img, .contact__input',{interval: 200});
 function initEmailJS() {
     if (typeof emailjs !== "undefined") {
         console.log("✅ EmailJS library detected. Initializing...");
-        emailjs.init("vip4AcNw6Dzxm1Kab"); // Your public key
+        emailjs.init("vip4AcNw6Dzxm1Kab"); 
         console.log("✅ EmailJS initialized with public key.");
 
         const form = document.getElementById("contact-form");
@@ -82,9 +82,9 @@ function initEmailJS() {
 
                     // Fade out after 4 seconds
                     setTimeout(() => {
-                        msg.style.transition = "opacity 1s ease";
-                        msg.style.opacity = "0";
-                        setTimeout(() => { msg.style.display = "none"; }, 1000);
+                        thanksMessage.style.transition = "opacity 1s ease";
+                        thanksMessage.style.opacity = "0";
+                        setTimeout(() => { thanksMessage.style.display = "none"; }, 1000);
                     }, 4000);
 
                 }, function(error) {
