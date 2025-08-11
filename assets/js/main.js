@@ -54,17 +54,27 @@ sr.reveal('.home__img, .about__subtitle, .about__text, .skills__img',{delay: 400
 sr.reveal('.home__social-icon',{ interval: 200}); 
 sr.reveal('.skills__data, .work__img, .contact__input',{interval: 200}); 
 
-/*===== EMAILJS CONTACT FORM (Load-Safe) =====*/
+/*===== EMAILJS CONTACT FORM (Load-Safe with Debug Logs) =====*/
 function initEmailJS() {
     if (typeof emailjs !== "undefined") {
+        console.log("✅ EmailJS library detected. Initializing...");
         emailjs.init("vip4AcNw6Dzxm1Kab"); // Your public key
+        console.log("✅ EmailJS initialized with public key.");
 
         const form = document.getElementById("contact-form");
+        if (!form) {
+            console.error("❌ Contact form not found in DOM.");
+            return;
+        }
+
+        console.log("✅ Contact form found. Attaching submit handler...");
         form.addEventListener("submit", function(e) {
             e.preventDefault();
+            console.log("📤 Sending form data via EmailJS...");
 
             emailjs.sendForm("service_yecggpf", "template_j08y2ff", this)
-                .then(function() {
+                .then(function(response) {
+                    console.log("✅ EmailJS sendForm success:", response);
                     const msg = document.getElementById("thanksMessage");
                     msg.style.display = "block";
                     msg.style.opacity = "1";
@@ -78,12 +88,12 @@ function initEmailJS() {
                     }, 4000);
 
                 }, function(error) {
-                    console.error("EmailJS Error:", error);
-                    alert("❌ Failed to send message. Please try again.");
+                    console.error("❌ EmailJS sendForm error:", error);
+                    alert("❌ Failed to send message. Please check console for details.");
                 });
         });
     } else {
-        // If emailjs isn't ready yet, try again in 200ms
+        console.warn("⏳ EmailJS not loaded yet. Retrying in 200ms...");
         setTimeout(initEmailJS, 200);
     }
 }
