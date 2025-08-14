@@ -100,3 +100,42 @@ function initEmailJS() {
 
 // Start initialization
 initEmailJS();
+
+//ai bot
+(function() {
+    // Initialize Chatbase if not already initialized
+    if (!window.chatbase || window.chatbase("getState") !== "initialized") {
+        window.chatbase = (...arguments) => {
+            if (!window.chatbase.q) {
+                window.chatbase.q = [];
+            }
+            window.chatbase.q.push(arguments);
+        };
+
+        window.chatbase = new Proxy(window.chatbase, {
+            get(target, prop) {
+                if (prop === "q") {
+                    return target.q;
+                }
+                return (...args) => target(prop, ...args);
+            }
+        });
+    }
+
+    // Function to load the Chatbase script
+    const onLoad = function() {
+        const script = document.createElement("script");
+        script.src = "https://www.chatbase.co/embed.min.js";
+        script.id = "MlfiHSdbmSwWbjYeMjXCB";
+        script.domain = "www.chatbase.co";
+        document.body.appendChild(script);
+    };
+
+    // Load script after page is fully loaded
+    if (document.readyState === "complete") {
+        onLoad();
+    } else {
+        window.addEventListener("load", onLoad);
+    }
+})();
+
